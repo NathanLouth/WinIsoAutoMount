@@ -29,7 +29,9 @@ int main() {
     wchar_t isoPath[MAX_PATH] = { 0 };
     while (fgets(line, sizeof(line), file)) {
         if (strncmp(line, "iso_path=", 9) == 0) {
-            mbstowcs(isoPath, line + 9, sizeof(isoPath) / sizeof(wchar_t) - 1);
+            // Using mbstowcs_s instead of mbstowcs
+            size_t len = strlen(line + 9);
+            mbstowcs_s(NULL, isoPath, MAX_PATH, line + 9, len);
             break;
         }
     }
